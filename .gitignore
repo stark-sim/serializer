@@ -1,3 +1,8 @@
+# JetBrains template
+.idea
+*.iml
+out/
+
 # Binaries for programs and plugins
 *.exe
 *.exe~
@@ -12,4 +17,19 @@
 *.out
 
 # Dependency directories (remove the comment below to include it)
-# vendor/
+vendor/
+
+### macOS template
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# log
+/logger/log_files/
+*.log
+
+# config
+config.yaml
+
+# temp
+temp/
