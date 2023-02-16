@@ -1,6 +1,7 @@
 package serializer
 
 import (
+	"fmt"
 	"math"
 	"strconv"
 	"testing"
@@ -14,6 +15,7 @@ func TestRandomObjSerialize(t *testing.T) {
 		SerialNumber uint64  `json:"serial_number"`
 		Price        float64 `json:"price"`
 		PopularRate  float64 `json:"popular_rate"`
+		StoreNum     int32   `json:"store_num"`
 	}
 	// init obj
 	book := &Book{
@@ -21,14 +23,11 @@ func TestRandomObjSerialize(t *testing.T) {
 		Name:         "张三日记",
 		SerialNumber: math.MaxUint64,
 		Price:        99.9,
-		PopularRate:  99999999999.55,
+		PopularRate:  19999943563211111.5555555555,
+		StoreNum:     10,
 	}
 	// serialize obj to frontend friendly
-	bookSerializer := &ModelSerializer{
-		Model:    book,
-		IsPlural: false,
-	}
-	res := bookSerializer.Serialize()
+	res := Serialize(book)
 	// check res
 	if res.(map[string]interface{})["id"].(string) != strconv.FormatInt(book.ID, 10) {
 		t.Errorf("book's id not serialized properly, got %v", res.(map[string]interface{})["id"].(string))
@@ -39,4 +38,54 @@ func TestRandomObjSerialize(t *testing.T) {
 	if res.(map[string]interface{})["name"].(string) != book.Name {
 		t.Errorf("book's name not serialized properly, got %v", res.(map[string]interface{})["name"].(string))
 	}
+	if res.(map[string]interface{})["price"].(float64) != book.Price {
+		t.Errorf("store_num not expected")
+	}
+	if res.(map[string]interface{})["store_num"].(int64) != int64(book.StoreNum) {
+		t.Errorf("store_num not expected")
+	}
+}
+
+func TestListObjSerialize(t *testing.T) {
+	type Directory struct {
+		ID       uint64      `json:"id"`
+		Name     string      `json:"name"`
+		Children []Directory `json:"children"`
+	}
+	list := []Directory{
+		{
+			ID:   288989722028675072,
+			Name: "顶级菜单0",
+			Children: []Directory{
+				{
+					ID:       288989722028675073,
+					Name:     "二级菜单0",
+					Children: nil,
+				},
+				{
+					ID:       288989722028675074,
+					Name:     "二级菜单1",
+					Children: nil,
+				},
+			},
+		},
+		{
+			ID:   288989722028675075,
+			Name: "顶级菜单1",
+			Children: []Directory{
+				{
+					ID:       288989722028675076,
+					Name:     "二级菜单2",
+					Children: nil,
+				},
+				{
+					ID:       288989722028675077,
+					Name:     "二级菜单3",
+					Children: nil,
+				},
+			},
+		},
+	}
+	res := Serialize(list)
+	fmt.Printf("%+v", res)
 }
