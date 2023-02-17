@@ -27,7 +27,7 @@ func TestRandomObjSerialize(t *testing.T) {
 		StoreNum:     10,
 	}
 	// serialize obj to frontend friendly
-	res := Serialize(book)
+	res := FrontendSerialize(book)
 	// check res
 	if res.(map[string]interface{})["id"].(string) != strconv.FormatInt(book.ID, 10) {
 		t.Errorf("book's id not serialized properly, got %v", res.(map[string]interface{})["id"].(string))
@@ -86,6 +86,14 @@ func TestListObjSerialize(t *testing.T) {
 			},
 		},
 	}
-	res := Serialize(list)
+	res := FrontendSerialize(list)
+	fmt.Printf("%+v", res)
+}
+
+func TestRandomValueSerialize(t *testing.T) {
+	numbers := []int64{288989722028675072, 288989722028675073, 288989722028675074, 288989722028675075}
+	res := FrontendSerialize(numbers)
+	fmt.Printf("%+v", res)
+	res = FrontendSerialize(numbers[0])
 	fmt.Printf("%+v", res)
 }
