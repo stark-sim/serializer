@@ -35,8 +35,13 @@ func VerifyHMAC(c *gin.Context, key string) (bool, error) {
 		return false, err
 	}
 
+	var m map[string]interface{}
+	if err = json.Unmarshal(body, &m); err != nil {
+		return false, err
+	}
+
 	// 请求参数排序
-	bodyBytes, err := json.Marshal(string(body))
+	bodyBytes, err := json.Marshal(m)
 	if err != nil {
 		return false, err
 	}
