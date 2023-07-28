@@ -29,19 +29,24 @@ func VerifyHMAC(c *gin.Context, key string) (bool, error) {
 		return false, err
 	}
 
-	var m map[string]interface{}
-	if err = json.Unmarshal(body, &m); err != nil {
-		return false, err
+	var bodyBytes []byte
+	if body != nil && len(body) != 0 {
+		var m map[string]interface{}
+		if err = json.Unmarshal(body, &m); err != nil {
+			return false, err
+		}
+		// 请求参数排序
+		bodyBytes, err = json.Marshal(m)
+		if err != nil {
+			return false, err
+		}
 	}
 
-	// 请求参数排序
-	bodyBytes, err := json.Marshal(m)
-	if err != nil {
-		return false, err
+	strData := c.Request.RequestURI
+	if bodyBytes != nil && len(bodyBytes) != 0 {
+		// 整合需要序列化的数据
+		strData += string(bodyBytes)
 	}
-
-	// 整合需要序列化的数据
-	strData := c.Request.RequestURI + string(bodyBytes)
 	data, err := json.Marshal(strData)
 	if err != nil {
 		return false, err
@@ -51,16 +56,24 @@ func VerifyHMAC(c *gin.Context, key string) (bool, error) {
 }
 
 func GenerateHMAC(requestURI, key string, body []byte) (string, error) {
-	var tempStruct map[string]interface{}
-	if err := json.Unmarshal(body, &tempStruct); err != nil {
-		return "", errors.New("invalid body data")
-	}
-	newBody, err := json.Marshal(tempStruct)
-	if err != nil {
-		return "", errors.New(fmt.Sprintf("marshal body data failed, err: %v", err))
+	var newBody []byte
+	var err error
+	if body != nil && len(body) != 0 {
+		var tempStruct map[string]interface{}
+		if err := json.Unmarshal(body, &tempStruct); err != nil {
+			return "", errors.New("invalid body data")
+		}
+		newBody, err = json.Marshal(tempStruct)
+		if err != nil {
+			return "", errors.New(fmt.Sprintf("marshal body data failed, err: %v", err))
+		}
 	}
 
-	strData := requestURI + string(newBody)
+	strData := requestURI
+	if newBody != nil && len(body) != 0 {
+		strData += string(newBody)
+	}
+
 	byteData, err := json.Marshal(strData)
 	if err != nil {
 		return "", errors.New(fmt.Sprintf("marshal str data failed, err: %v", err))
