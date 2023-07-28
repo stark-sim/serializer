@@ -1,7 +1,6 @@
 package h_mac
 
 import (
-	"bytes"
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/hex"
@@ -24,14 +23,8 @@ func CalculateHMAC(data []byte, key string) string {
 // VerifyHMAC 验证 HMAC
 func VerifyHMAC(c *gin.Context, key string) (bool, error) {
 	receivedHMAC := c.GetHeader(HeaderNameHMAC)
-	// 从请求中读取原始数据
-	fmt.Printf("URI is %v\n", c.Request.RequestURI)
-	uriBytes, err := json.Marshal(c.Request.RequestURI)
-	if err != nil {
-		return false, err
-	}
 
-	body, err := c.Copy().GetRawData()
+	body, err := c.GetRawData()
 	if err != nil {
 		return false, err
 	}
@@ -47,33 +40,31 @@ func VerifyHMAC(c *gin.Context, key string) (bool, error) {
 		return false, err
 	}
 
-	// 合并数据
-	byteList := make([][]byte, 2)
-	byteList[0] = uriBytes
-	byteList[1] = bodyBytes
-	data := bytes.Join(byteList, []byte{})
+	// 整合需要序列化的数据
+	strData := c.Request.RequestURI + string(bodyBytes)
+	data, err := json.Marshal(strData)
+	if err != nil {
+		return false, err
+	}
 
 	return receivedHMAC == CalculateHMAC(data, key), nil
 }
 
-func GenerateHMAC(requestURI, key string, body []byte) (error, string) {
+func GenerateHMAC(requestURI, key string, body []byte) (string, error) {
 	var tempStruct map[string]interface{}
 	if err := json.Unmarshal(body, &tempStruct); err != nil {
-		return errors.New("invalid body data"), ""
+		return "", errors.New("invalid body data")
 	}
 	newBody, err := json.Marshal(tempStruct)
 	if err != nil {
-		return errors.New(fmt.Sprintf("marshal body data failed, err: %v", err)), ""
-	}
-	byteData := []byte(requestURI)
-	for _, b := range newBody {
-		byteData = append(byteData, b)
-	}
-	tempByteData := string(byteData)
-	byteData, err = json.Marshal(tempByteData)
-	if err != nil {
-		return errors.New(fmt.Sprintf("marshal temp data failed, err: %v", err)), ""
+		return "", errors.New(fmt.Sprintf("marshal body data failed, err: %v", err))
 	}
 
-	return nil, CalculateHMAC(byteData, key)
+	strData := requestURI + string(newBody)
+	byteData, err := json.Marshal(strData)
+	if err != nil {
+		return "", errors.New(fmt.Sprintf("marshal str data failed, err: %v", err))
+	}
+
+	return CalculateHMAC(byteData, key), nil
 }
