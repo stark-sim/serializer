@@ -10,9 +10,9 @@ import (
 var EmptyData struct{}
 
 type RespData struct {
-	Code    code.MyCode `json:"code"`
-	Message string      `json:"message"`
-	Data    interface{} `json:"data"`
+	Code code.MyCode `json:"code"`
+	Msg  string      `json:"msg"`
+	Data interface{} `json:"data"`
 }
 
 type PaginateResp struct {
@@ -24,9 +24,9 @@ type PaginateResp struct {
 
 func RespSuccess(ctx *gin.Context, data interface{}) {
 	rd := &RespData{
-		Code:    code.Success,
-		Message: code.Success.Msg(),
-		Data:    data,
+		Code: code.Success,
+		Msg:  code.Success.Msg(),
+		Data: data,
 	}
 	ctx.JSON(http.StatusOK, rd)
 }
@@ -44,18 +44,18 @@ func RespSuccessPagination(ctx *gin.Context, pageIndex, pageSize int, total int6
 
 func RespSuccessWithMsg(ctx *gin.Context, data interface{}, msg string) {
 	rd := &RespData{
-		Code:    code.Success,
-		Message: msg,
-		Data:    data,
+		Code: code.Success,
+		Msg:  msg,
+		Data: data,
 	}
 	ctx.JSON(http.StatusOK, rd)
 }
 
 func RespError(ctx *gin.Context, c code.MyCode) {
 	rd := &RespData{
-		Code:    c,
-		Message: c.Msg(),
-		Data:    EmptyData,
+		Code: c,
+		Msg:  c.Msg(),
+		Data: EmptyData,
 	}
 	ctx.JSON(http.StatusOK, rd)
 }
@@ -64,18 +64,18 @@ func RespError(ctx *gin.Context, c code.MyCode) {
 func RespErrorInvalidParams(ctx *gin.Context, err error) {
 	msg := validError(err)
 	rd := &RespData{
-		Code:    code.InvalidParams,
-		Message: msg,
-		Data:    EmptyData,
+		Code: code.InvalidParams,
+		Msg:  msg,
+		Data: EmptyData,
 	}
 	ctx.JSON(http.StatusOK, rd)
 }
 
 func RespErrorWithMsg(ctx *gin.Context, code code.MyCode, errMsg string) {
 	rd := &RespData{
-		Code:    code,
-		Message: errMsg,
-		Data:    EmptyData,
+		Code: code,
+		Msg:  errMsg,
+		Data: EmptyData,
 	}
 	ctx.JSON(http.StatusOK, rd)
 }
@@ -83,9 +83,9 @@ func RespErrorWithMsg(ctx *gin.Context, code code.MyCode, errMsg string) {
 func RespGrpcErrorWithMsg(ctx *gin.Context, code code.MyCode, err error) {
 	ret := status.Convert(err)
 	rd := &RespData{
-		Code:    code,
-		Message: ret.Message(),
-		Data:    nil,
+		Code: code,
+		Msg:  ret.Message(),
+		Data: nil,
 	}
 	ctx.JSON(http.StatusOK, rd)
 }
