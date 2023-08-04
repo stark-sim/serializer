@@ -47,3 +47,7 @@ func (c MyCode) Msg() string {
 	}
 	return msgFlags[ServerBusy]
 }
+
+func (c MyCode) Error() string {
+	return c.Msg()
+}
