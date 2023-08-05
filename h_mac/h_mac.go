@@ -1,6 +1,7 @@
 package h_mac
 
 import (
+	"bytes"
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/hex"
@@ -27,6 +28,12 @@ func VerifyHMAC(c *gin.Context, key string) (bool, error) {
 	body, err := c.GetRawData()
 	if err != nil {
 		return false, err
+	}
+
+	// 处理前端传空结构体
+	emptyBody := []byte("{}")
+	if bytes.Compare(emptyBody, body) == 0 {
+		body = []byte{}
 	}
 
 	var bodyBytes []byte
@@ -56,6 +63,12 @@ func VerifyHMAC(c *gin.Context, key string) (bool, error) {
 }
 
 func GenerateHMAC(requestURI, key string, body []byte) (string, error) {
+	// 处理前端传空结构体
+	emptyBody := []byte("{}")
+	if bytes.Compare(emptyBody, body) == 0 {
+		body = []byte{}
+	}
+	// 正常处理加密
 	var newBody []byte
 	var err error
 	if body != nil && len(body) != 0 {
