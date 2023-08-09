@@ -8,6 +8,6 @@ type PaginateReq struct {
 type PaginateResp struct {
 	PageIndex int         `json:"page_index"`
 	PageSize  int         `json:"page_size"`
-	Total     int64       `json:"total"`
+	Total     int         `json:"total"`
 	List      interface{} `json:"list"`
 }
