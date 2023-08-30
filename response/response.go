@@ -89,3 +89,13 @@ func RespGrpcErrorWithMsg(ctx *gin.Context, code code.MyCode, err error) {
 	}
 	ctx.JSON(http.StatusOK, rd)
 }
+
+// DynamicRespErr 自适应返回，error 是定义的就按定义的返回，否则按 500 返回并返回 err 的内容
+func DynamicRespErr(c *gin.Context, err error) {
+	trueErr, ok := err.(code.MyCode)
+	if ok {
+		RespError(c, trueErr)
+	} else {
+		RespErrorWithMsg(c, code.ServerErr, err.Error())
+	}
+}

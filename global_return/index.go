@@ -39,13 +39,3 @@ func ResponseSuccess(ctx *gin.Context, codeMsg *code_msgs.CodeMsg, data interfac
 	}
 	ctx.JSON(http.StatusOK, rd)
 }
-
-// DynamicResponseErr 自适应返回，error 是定义的就按定义的返回，否则按 500 返回并返回 err 的内容
-func DynamicResponseErr(c *gin.Context, err error) {
-	trueErr, ok := err.(*code_msgs.CodeMsg)
-	if ok {
-		ResponseError(c, trueErr)
-	} else {
-		ResponseErrorWithCustomMsg(c, code_msgs.Fail, err.Error())
-	}
-}
