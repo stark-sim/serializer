@@ -10,6 +10,7 @@ const (
 
 	InvalidParams MyCode = 30000
 	NotFound      MyCode = 30001
+	NotEnough     MyCode = 30002
 
 	AuthFailed MyCode = 40000
 	UnLogin    MyCode = 40001
@@ -29,6 +30,7 @@ var msgFlags = map[MyCode]string{
 
 	InvalidParams: "非法参数或缺失",
 	NotFound:      "资源不存在",
+	NotEnough:     "资源不足以执行该操作",
 
 	AuthFailed: "权限验证失败",
 	UnLogin:    "未登录",
