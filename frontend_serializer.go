@@ -41,9 +41,9 @@ func adjustSerializedObj(value interface{}) interface{} {
 		for k, v := range obj {
 			// 如果 key 是 id 结尾的，那直接转 string
 			if strings.HasSuffix(k, "id") {
-				strID, ok := v.(string)
+				strID, ok := v.(json.Number)
 				if ok {
-					obj[k] = strID
+					obj[k] = strID.String()
 				} else {
 					obj[k] = adjustSerializedObj(v)
 				}
