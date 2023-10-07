@@ -6,6 +6,7 @@ import (
 	"errors"
 	"reflect"
 	"strconv"
+	"strings"
 )
 
 const (
@@ -38,7 +39,17 @@ func adjustSerializedObj(value interface{}) interface{} {
 		return values
 	} else if obj, ok := value.(map[string]interface{}); ok {
 		for k, v := range obj {
-			obj[k] = adjustSerializedObj(v)
+			// 如果 key 是 id 结尾的，那直接转 string
+			if strings.HasSuffix(k, "id") {
+				strID, ok := v.(string)
+				if ok {
+					obj[k] = strID
+				} else {
+					obj[k] = adjustSerializedObj(v)
+				}
+			} else {
+				obj[k] = adjustSerializedObj(v)
+			}
 		}
 		return obj
 		// 	如果是数字，检查是否可以转换回数字类型，而非全定义为字符串
