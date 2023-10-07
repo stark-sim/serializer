@@ -51,6 +51,8 @@ var (
 	FailMakeProfitBill      = &CodeMsg{50017, "创建分润账单失败"}
 	FailGetProfitBill       = &CodeMsg{50018, "获取分润账单失败"}
 	FailGetHmacKey          = &CodeMsg{50019, "获取密钥对失败"}
+	FailGetInviteCode       = &CodeMsg{Code: 50050, Msg: "邀请码不存在"}
+	FailHasRegister         = CodeMsg{50051, "该手机号已注册"}
 )
 
 func (e *CodeMsg) Error() string {
