@@ -20,6 +20,9 @@ const (
 	ServerErrDB            MyCode = 50001
 	ServerErrCache         MyCode = 50002
 	ServerErrThirdPartyAPI MyCode = 50003
+
+	FailGetInviteCode MyCode = 50050
+	FailHasRegister   MyCode = 50051
 )
 
 var msgFlags = map[MyCode]string{
@@ -40,6 +43,8 @@ var msgFlags = map[MyCode]string{
 	ServerErrDB:            "服务端数据库异常",
 	ServerErrCache:         "缓存异常",
 	ServerErrThirdPartyAPI: "第三方接口调用异常",
+	FailGetInviteCode:      "邀请码不存在",
+	FailHasRegister:        "该手机号已注册",
 }
 
 func (c MyCode) Msg() string {
