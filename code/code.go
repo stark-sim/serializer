@@ -11,10 +11,12 @@ const (
 	InvalidParams MyCode = 30000
 	NotFound      MyCode = 30001
 	NotEnough     MyCode = 30002
+	SourceExist   MyCode = 30003
 
-	AuthFailed MyCode = 40000
-	UnLogin    MyCode = 40001
-	InvalidKey MyCode = 40002
+	AuthFailed     MyCode = 40000
+	UnLogin        MyCode = 40001
+	InvalidKey     MyCode = 40002
+	InvalidRequest MyCode = 40003
 
 	ServerErr              MyCode = 50000
 	ServerErrDB            MyCode = 50001
@@ -34,10 +36,12 @@ var msgFlags = map[MyCode]string{
 	InvalidParams: "非法参数或缺失",
 	NotFound:      "资源不存在",
 	NotEnough:     "资源不足以执行该操作",
+	SourceExist:   "资源已存在",
 
-	AuthFailed: "权限验证失败",
-	UnLogin:    "未登录",
-	InvalidKey: "非法秘钥",
+	AuthFailed:     "权限验证失败",
+	UnLogin:        "未登录",
+	InvalidKey:     "非法秘钥",
+	InvalidRequest: "非法请求",
 
 	ServerErr:              "服务端异常",
 	ServerErrDB:            "服务端数据库异常",
