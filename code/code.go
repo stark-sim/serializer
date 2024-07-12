@@ -38,7 +38,7 @@ var msgFlags = map[MyCode]string{
 	NotEnough:     "资源不足以执行该操作",
 	SourceExist:   "资源已存在",
 
-	AuthFailed:     "权限验证失败",
+	AuthFailed:     "登陆已过期，请重新登陆",
 	UnLogin:        "未登录",
 	InvalidKey:     "非法秘钥",
 	InvalidRequest: "非法请求",
