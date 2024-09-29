@@ -62,10 +62,10 @@ func RespError(ctx *gin.Context, c code.MyCode) {
 
 // RespErrorInvalidParams 参数校验不通过(gin should bind)
 func RespErrorInvalidParams(ctx *gin.Context, err error) {
-	msg := validError(err)
+	//msg := validError(err)
 	rd := &RespData{
 		Code: code.InvalidParams,
-		Msg:  msg,
+		Msg:  err.Error(),
 		Data: EmptyData,
 	}
 	ctx.JSON(http.StatusOK, rd)

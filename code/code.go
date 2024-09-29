@@ -28,27 +28,27 @@ const (
 )
 
 var msgFlags = map[MyCode]string{
-	ServerBusy: "服务繁忙",
+	ServerBusy: "Busy service",
 
-	Success:        "成功",
-	SuccessCreated: "创建成功",
+	Success:        "Success",
+	SuccessCreated: "Create Success",
 
-	InvalidParams: "非法参数或缺失",
-	NotFound:      "资源不存在",
-	NotEnough:     "资源不足以执行该操作",
-	SourceExist:   "资源已存在",
+	InvalidParams: "Illegal or missing parameters",
+	NotFound:      "Resource does not exist",
+	NotEnough:     "Insufficient resources to perform the operation",
+	SourceExist:   "Resource already exists",
 
-	AuthFailed:     "登陆已过期，请重新登陆",
-	UnLogin:        "未登录",
-	InvalidKey:     "非法秘钥",
-	InvalidRequest: "非法请求",
+	AuthFailed:     "Login has expired, please log in again",
+	UnLogin:        "Not logged in",
+	InvalidKey:     "Illegal key",
+	InvalidRequest: "Illegal request",
 
-	ServerErr:              "服务端异常",
-	ServerErrDB:            "服务端数据库异常",
-	ServerErrCache:         "缓存异常",
-	ServerErrThirdPartyAPI: "第三方接口调用异常",
-	FailGetInviteCode:      "邀请码不存在",
-	FailHasRegister:        "该手机号已注册",
+	ServerErr:              "Server exception",
+	ServerErrDB:            "Server database exception",
+	ServerErrCache:         "Cache exception",
+	ServerErrThirdPartyAPI: "Third-party interface call exception",
+	FailGetInviteCode:      "Invitation code does not exist",
+	FailHasRegister:        "This phone number has been registered",
 }
 
 func (c MyCode) Msg() string {
